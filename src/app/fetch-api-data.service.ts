@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { catchError } from 'rxjs/internal/operators';
+import { catchError } from 'rxjs/operators';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -9,7 +9,7 @@ const apiUrl = 'https://movies-flix50-8c220c6131d7.herokuapp.com/';
 @Injectable({
   providedIn: 'root'
 })
-export class UserRegistrationService {
+export class FetchApiDataService {
   // Inject the HttpClient module to the constructor params
  // This will provide HttpClient to the entire class, making it available via this.http
   constructor(private http: HttpClient) {
@@ -25,7 +25,7 @@ export class UserRegistrationService {
     //making the api call for the login endpoint
     public userLogin(userDetails: any): Observable<any> {
       console.log(userDetails);
-      return this.http.post(apiUrl + 'users', userDetails).pipe(
+      return this.http.post(apiUrl + 'login', userDetails).pipe(
         catchError(this.handleError)
       );
     }
@@ -171,7 +171,7 @@ export class UserRegistrationService {
       );
     }
   
-    private extractResponseData(res: Response): any {
+    private extractResponseData(res: any): any {
       const body = res;
       return body || {};
     }
@@ -185,6 +185,6 @@ private handleError(error: HttpErrorResponse): any {
         `Error body is: ${error.error}`);
     }
     return throwError(
-    'Something bad happened; please try again later.');
+    'Something bad happened - please try again later.');
   }
 }
