@@ -14,6 +14,12 @@ export class FetchApiDataService {
  // This will provide HttpClient to the entire class, making it available via this.http
   constructor(private http: HttpClient) {
   }
+
+  private getToken(): string {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user).token : '';
+}
+
  // Making the api call for the user registration endpoint
   public userRegistration(userDetails: any): Observable<any> {
     console.log(userDetails);
@@ -60,9 +66,9 @@ export class FetchApiDataService {
     }
   
     //make api call to the endpoint for a single director 
-    getOneDirector(directorName: string): Observable<any> {
+    getOneDirector(): Observable<any> {
       const token = localStorage.getItem('token');
-      return this.http.get(apiUrl + 'movies/directors/' + directorName, {
+      return this.http.get(apiUrl + 'movies/directors/', {
         headers: new HttpHeaders(
           {
             Authorization: 'Bearer ' + token,
@@ -87,22 +93,14 @@ export class FetchApiDataService {
       );
     }
   
-    //make api call to the endpoint for a single user
-    getOneUser(userName: string): Observable<any> {
-      const token = localStorage.getItem('token');
-      return this.http.get(apiUrl + 'users/' + userName, {
-        headers: new HttpHeaders(
-          {
-            Authorization: 'Bearer ' + token,
-          })
-      }).pipe(
-        map(this.extractResponseData),
-        catchError(this.handleError)
-      );
+    //get one user information
+    getOneUser(): Observable<any> {
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      return user;
     }
-  
+
     //make api call to a single user's favorite movies endpoint 
-    getUsersMovies(genreName: string): Observable<any> {
+    getUsersMovies(genreName: any): Observable<any> {
       const token = localStorage.getItem('token');
       return this.http.get(apiUrl + 'users/movies/' + genreName, {
         headers: new HttpHeaders(
@@ -117,9 +115,10 @@ export class FetchApiDataService {
     }
   
     //make api call to add a movie to a users favorites 
-    addFavMovies(Username: string, MovieID: string): Observable<any> {
+    addFavMovies( movieID: string): Observable<any> {
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
       const token = localStorage.getItem('token');
-      return this.http.put(apiUrl + `users/${Username}/movies/${MovieID}`, {
+      return this.http.post(apiUrl + `users/${user.Username}/movies/${movieID}`, {}, {
         headers: new HttpHeaders(
           {
             Authorization: 'Bearer ' + token,
@@ -130,9 +129,11 @@ export class FetchApiDataService {
       );
     }
     //make api call to edit a users info 
-    editUserProfile(Username: string): Observable<any> {
+    editUserProfile(userDetails: any): Observable<any> {
       const token = localStorage.getItem('token');
-      return this.http.put(apiUrl + 'users/' + Username, {
+      console.log(userDetails);
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      return this.http.put(apiUrl + 'users/' + user.Username, userDetails, {
         headers: new HttpHeaders(
           {
             Authorization: 'Bearer ' + token,
@@ -142,11 +143,12 @@ export class FetchApiDataService {
         catchError(this.handleError)
       );
     }
-  
+
     //make api call to delete a user's account
-    deleteUser(Username: string): Observable<any> {
+    deleteUser(): Observable<any> {
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
       const token = localStorage.getItem('token');
-      return this.http.delete(apiUrl + 'users/' + Username, {
+      return this.http.delete(apiUrl + 'users/' + user.Username, {
         headers: new HttpHeaders(
           {
             Authorization: 'Bearer ' + token,
@@ -158,9 +160,10 @@ export class FetchApiDataService {
     }
   
     //make api call to delete a movie from a user's favorites
-    deleteMovie(Username: string, MovieID: string): Observable<any> {
+    deleteMovie(movieID: string): Observable<any> {
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
       const token = localStorage.getItem('token');
-      return this.http.delete(apiUrl + `users/${Username}/movies/${MovieID}`, {
+      return this.http.delete(apiUrl + `users/${user.Username}/movies/${movieID}`, {
         headers: new HttpHeaders(
           {
             Authorization: 'Bearer ' + token,
