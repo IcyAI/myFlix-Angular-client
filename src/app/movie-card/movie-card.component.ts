@@ -6,7 +6,12 @@ import { GenreInfoComponent } from '../genre-info/genre-info.component';
 import { MovieSynopsisComponent } from '../movie-synopsis/movie-synopsis.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-
+/**
+ * Component represnting a movie card
+ * @selector 'app-movie-card'
+ * @templateUrls './movie-card.component.html'
+ * @styleUrls ['./movie-card.component.scss']
+ */
 
 @Component({
   selector: 'app-movie-card',
@@ -21,6 +26,15 @@ export class MovieCardComponent implements OnInit {
   isFavMovie: boolean = false;
   userData = { Username: "", FavoriteMovies: [] };
 
+
+    /**
+   * Called when creating an instance of the class
+   * @constructor
+   * @param fetchMovies - connects the client to the API via FetchApiDataService 
+   * @param snackBar - provides feedback after user interaction by displaying notifications
+   * @param dialog - opens dialog box
+   */
+  
   constructor(
     public fetchMovies: FetchApiDataService,
     public snackBar: MatSnackBar,

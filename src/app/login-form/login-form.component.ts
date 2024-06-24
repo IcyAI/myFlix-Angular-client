@@ -11,6 +11,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Router } from '@angular/router';
 
+/**
+ * Component representing the login form
+ * @selector 'app-login-form'
+ * @templateUrl './login-form.component.html'
+ * @styleUrls ['./login-form.component.scss']
+ */
+
 @Component({
   selector: 'app-login-form',
   templateUrl: './login-form.component.html',
@@ -20,12 +27,15 @@ export class LoginFormComponent implements OnInit {
 
   @Input() userData = { Username: '', Password: '' };
 
-  /*
+  /** 
    * Called when creating an instance of the class
-   * @param userRegistrationService 
-   * @param dialogRef 
-   * @param snackBar 
+   * @constructor
+   * @param userRegistrationService - connects the client to the API
+   * @param dialogRef - references this component when opening the dialog 
+   * @param snackBar - provides feedback after user interaction by displaying notifications
+   * @param router - the Router module for navigation
    */
+  
   constructor(
     public fetchApiData: FetchApiDataService,
     public dialogRef: MatDialogRef<LoginFormComponent>,

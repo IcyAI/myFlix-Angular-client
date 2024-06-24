@@ -3,6 +3,13 @@ import { FetchApiDataService } from '../fetch-api-data.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+/**
+ * Component representing the user profile
+ * @selector 'app-user-profile'
+ * @templateUrl './user-profile.component.html'
+ * @styleUrls ['./user-profile.component.scss']
+ */
+
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
@@ -15,6 +22,13 @@ export class UserProfileComponent implements OnInit {
   movies: any[] = [];
   user: any = {};
 
+    /** 
+  * Called when creating an instance of the class
+  * @param fetchProfile - connects the client to the API
+  * @param snackBar - provides feedback after user interaction by displaying notifications
+  * @param router - the Router module for navigation
+  */
+ 
   constructor(
     public fetchProfile: FetchApiDataService,
     public snackBar: MatSnackBar,
